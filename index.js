@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain,screen } = require('electron');
 const windowStateKeeper = require('electron-window-state');
-
+const path=require('path')
+console.log("the path is ",path.join(__dirname,'asset/clock_icon.png'))
 
 let mainWindow;
 let secWindow
@@ -32,6 +33,7 @@ function createWindow() {
   width: winWidth,
   height: winHeight,
     alwaysOnTop: true,
+    icon:path.join(__dirname,'asset/clock_icon.png'),
     frame: false, 
     modal:true,
     webPreferences: {
