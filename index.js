@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain,screen } = require('electron');
 const windowStateKeeper = require('electron-window-state');
 
 
@@ -7,22 +7,30 @@ let secWindow
 
 
 function createWindow() {
+ const { width: screenWidth, height: screenHeight } = screen.getPrimaryDisplay().workAreaSize;
+
+  const winWidth = 270;
+  const winHeight = 80;
 
   let mainWindowState = windowStateKeeper({
-    defaultWidth: 250,
-    defaultHeight: 80,
+    // defaultWidth: 250,
+    // defaultHeight: 80,
+    // width: winWidth,
+    // height: winHeight,
     // x:30,
     // y:30
-  });
+  }); 
 
 
 
   
-  mainWindow = new BrowserWindow({
-  'x': mainWindowState.x,
-    'y': mainWindowState.y,
-    'width': mainWindowState.width,
-    'height': mainWindowState.height,
+  mainWindow = new BrowserWindow({ 
+  // 'x': mainWindowState.x,
+  //   'y': mainWindowState.y,
+  //   'width': mainWindowState.width,
+  //   'height': mainWindowState.height,
+  width: winWidth,
+  height: winHeight,
     alwaysOnTop: true,
     frame: false, 
     modal:true,
@@ -62,13 +70,19 @@ if (data) {
  
 
 ipcMain.on('set-timer-data', (event, data) => {
-  console.log("the event is",data)
+  console.log("the event if index is",data)
   secWindow.hide();
   mainWindow.webContents.send('timer-data', data);
 
-  // mainWindow.webContents.openDevTools();
-
 })
+
+// mainWindow.webContents.openDevTools();
+
+
+ // Move window to the right edge of the screen
+ const x = screenWidth - winWidth;
+ const y = 0; // Top edge (or use (screenHeight - winHeight) / 2 for vertical center)
+ mainWindow.setPosition(x, y);
 
 }
 
